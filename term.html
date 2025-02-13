@@ -3,10 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service</title>
+    <title>Upload Verification File</title>
 </head>
 <body>
-    <h1>Terms of Service</h1>
-    <p>These are the terms of service for our application...</p>
+    <h2>Upload TikTok Verification File</h2>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Upload</button>
+
+    <p id="status"></p>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            if (!fileInput.files.length) {
+                alert("Please select a file!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("https://get-comments-tiktok.vercel.app/api/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    document.getElementById("status").innerText = "✅ File uploaded successfully!";
+                } else {
+                    document.getElementById("status").innerText = "❌ Upload failed!";
+                }
+            } catch (error) {
+                document.getElementById("status").innerText = "❌ Error uploading file!";
+            }
+        }
+    </script>
 </body>
 </html>
